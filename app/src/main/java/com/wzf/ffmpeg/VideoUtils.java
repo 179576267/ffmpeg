@@ -3,6 +3,7 @@ package com.wzf.ffmpeg;
 public class VideoUtils {
 
 	public native static void decode(String input,String output);
+	public native static String getVideoInfo(String input);
 	
 	static{
 		System.loadLibrary("avutil-54");
@@ -13,7 +14,6 @@ public class VideoUtils {
 		System.loadLibrary("postproc-53");
 		System.loadLibrary("avfilter-5");
 		System.loadLibrary("avdevice-56");
-		System.loadLibrary("myffmpeg");
 		System.loadLibrary("wzf");
 
 

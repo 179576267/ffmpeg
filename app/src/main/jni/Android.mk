@@ -1,4 +1,3 @@
-
 LOCAL_PATH := $(call my-dir)
 
 #ffmpeg lib
@@ -46,10 +45,8 @@ include $(PREBUILT_SHARED_LIBRARY)
 #myapp
 include $(CLEAR_VARS)
 LOCAL_MODULE := wzf
-LOCAL_SRC_FILES := libwzf.c
-LOCAL_C_INCLUDES += $(LOCAL_PATH)/include
+LOCAL_SRC_FILES := wzf.c
+LOCAL_C_INCLUDES += $(LOCAL_PATH)/header/include
 LOCAL_LDLIBS := -llog
 LOCAL_SHARED_LIBRARIES := avcodec avdevice avfilter avformat avutil postproc swresample swscale
 include $(BUILD_SHARED_LIBRARY)
-
-
