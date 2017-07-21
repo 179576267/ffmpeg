@@ -14,49 +14,36 @@
 #define LOGE(FORMAT, ...) __android_log_print(ANDROID_LOG_ERROR,"wzf",FORMAT,##__VA_ARGS__);
 
 
-JNIEXPORT void JNICALL Java_com_wzf_ffmpeg_VideoUtils_decode
-        (JNIEnv
-         *env,
-         jclass jcls, jstring
-         input_jstr,
-         jstring output_jstr
-        ) {
+JNIEXPORT void JNICALL Java_com_wzf_ffmpeg_VideoUtils_decode(JNIEnv *env,jclass jcls, jstring input_jstr, jstring output_jstr) {
     //需要转码的视频文件(输入的视频文件)
     const char *input_cstr = (*env)->GetStringUTFChars(env, input_jstr, NULL);
     const char *output_cstr = (*env)->GetStringUTFChars(env, output_jstr, NULL);
 
-//1.注册所有组件,初始化信息
+
+    //1.注册所有组件,初始化信息
     av_register_all();
 
-//封装格式上下文，统领全局的结构体，保存了视频文件封装格式的相关信息，时长，分辨率，等等
+    //封装格式上下文，统领全局的结构体，保存了视频文件封装格式的相关信息，时长，分辨率，等等
     AVFormatContext *pFormatCtx = avformat_alloc_context();
-//pFormatCtx->duration;//时长
-
-//2.打开输入视频文件
-    if (
-            avformat_open_input(&pFormatCtx, input_cstr, NULL, NULL
-            ) != 0) {
+    //pFormatCtx->duration;//时长
+    //2.打开输入视频文件
+    if (avformat_open_input(&pFormatCtx, input_cstr, NULL, NULL) != 0) {
         LOGE("%s", "无法打开输入视频文件");
         return;
     }
-
-//3.获取视频文件信息
-    if (
-            avformat_find_stream_info(pFormatCtx, NULL
-            ) < 0) {
+    //3.获取视频文件信息
+    if (avformat_find_stream_info(pFormatCtx, NULL) < 0) {
         LOGE("%s", "无法获取视频文件信息");
         return;
     }
 
-//获取视频流的索引位置
-//遍历所有类型的流（音频流、视频流、字幕流），找到视频流
+    //获取视频流的索引位置
+    //遍历所有类型的流（音频流、视频流、字幕流），找到视频流
     int v_stream_idx = -1;
     int i = 0;
-//number of streams
-    for (; i < pFormatCtx->
-            nb_streams;
-           i++) {
-//流的类型
+    //number of streams
+    for (; i < pFormatCtx->nb_streams; i++) {
+    //流的类型
         if (pFormatCtx->streams[i]->codec->codec_type == AVMEDIA_TYPE_VIDEO) {
             v_stream_idx = i;
             break;
@@ -68,49 +55,47 @@ JNIEXPORT void JNICALL Java_com_wzf_ffmpeg_VideoUtils_decode
         return;
     }
 
-//只有知道视频的编码方式，才能够根据编码方式去找到解码器
-//获取视频流中的编解码上下文
+    //只有知道视频的编码方式，才能够根据编码方式去找到解码器
+    //获取视频流中的编解码上下文
     AVCodecContext *pCodecCtx = pFormatCtx->streams[v_stream_idx]->codec;
-//4.根据编解码上下文中的编码id查找对应的解码
+    //4.根据编解码上下文中的编码id查找对应的解码
     AVCodec *pCodec = avcodec_find_decoder(pCodecCtx->codec_id);
-//（迅雷看看，找不到解码器，临时下载一个解码器）
+    //（迅雷看看，找不到解码器，临时下载一个解码器）
     if (pCodec == NULL) {
         LOGE("%s", "找不到解码器\n");
         return;
     }
 
-//5.打开解码器
-    if (
-            avcodec_open2(pCodecCtx, pCodec, NULL
-            ) < 0) {
+    //5.打开解码器
+    if (avcodec_open2(pCodecCtx, pCodec, NULL) < 0) {
         LOGE("%s", "解码器无法打开\n");
         return;
     }
 
-//输出视频信息
+    //输出视频信息
     LOGI("视频的文件格式：%s", pFormatCtx->iformat->name);
     LOGI("视频时长：%d", (pFormatCtx->duration) / 1000000);
     LOGI("视频的宽高：%d,%d", pCodecCtx->width, pCodecCtx->height);
     LOGI("解码器的名称：%s", pCodec->name);
 
-//准备读取
-//AVPacket用于存储一帧一帧的压缩数据（H264）
-//缓冲区，开辟空间
+    //准备读取
+    //AVPacket用于存储一帧一帧的压缩数据（H264）
+    //缓冲区，开辟空间
     AVPacket *packet = (AVPacket *) av_malloc(sizeof(AVPacket));
-//AVFrame用于存储解码后的像素数据(YUV)
-//内存分配
+    //AVFrame用于存储解码后的像素数据(YUV)
+    //内存分配
     AVFrame *pFrame = av_frame_alloc();
-//YUV420
+    //YUV420
     AVFrame *pFrameYUV = av_frame_alloc();
-//只有指定了AVFrame的像素格式、画面大小才能真正分配内存
-//缓冲区分配内存
+    //只有指定了AVFrame的像素格式、画面大小才能真正分配内存
+    //缓冲区分配内存
     uint8_t *out_buffer = (uint8_t *) av_malloc(
             avpicture_get_size(AV_PIX_FMT_YUV420P, pCodecCtx->width, pCodecCtx->height));
-//初始化缓冲区
+    //初始化缓冲区
     avpicture_fill((AVPicture
     *) pFrameYUV, out_buffer, AV_PIX_FMT_YUV420P, pCodecCtx->width, pCodecCtx->height);
 
-//用于转码（缩放）的参数，转之前的宽高，转之后的宽高，格式等
+    //用于转码（缩放）的参数，转之前的宽高，转之后的宽高，格式等
     struct SwsContext *sws_ctx = sws_getContext(pCodecCtx->width, pCodecCtx->height,
                                                 pCodecCtx->pix_fmt,
                                                 pCodecCtx->width, pCodecCtx->height,
@@ -165,23 +150,14 @@ JNIEXPORT void JNICALL Java_com_wzf_ffmpeg_VideoUtils_decode
                 LOGI("解码第%d帧", frame_count);
             }
         }
-
-//释放资源
+        //释放资源
         av_free_packet(packet);
     }
 
     fclose(fp_yuv);
-
-    (*env)->
-            ReleaseStringUTFChars(env, input_jstr, input_cstr
-    );
-    (*env)->
-            ReleaseStringUTFChars(env, output_jstr, output_cstr
-    );
-
+    (*env)->ReleaseStringUTFChars(env, input_jstr, input_cstr);
+    (*env)->ReleaseStringUTFChars(env, output_jstr, output_cstr);
     av_frame_free(&pFrame);
-
     avcodec_close(pCodecCtx);
-
     avformat_free_context(pFormatCtx);
 }
