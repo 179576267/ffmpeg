@@ -16,6 +16,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="解码" />
+    <Button
+        android:id="@+id/btn_player"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="播放" />
+    <Button
+        android:id="@+id/btn_thread"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="线程测试" />
 
     <TextView
         android:id="@+id/tv_result"

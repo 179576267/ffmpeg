@@ -11,6 +11,7 @@ cmake_minimum_required(VERSION 3.4.1)
 
 set(AppRoot D:/androidDemo/FFMPEG/app)
 include_directories(${AppRoot}/src/main/jni/header/include)
+include_directories(${AppRoot}/src/main/jni/header/libyuv)
 
 add_library( # Sets the name of the library.
              wzf
@@ -21,7 +22,7 @@ add_library( # Sets the name of the library.
              # Provides a relative path to your source file(s).
              # Associated headers in the same location as their source
              # file are automatically included.
-             src/main/jni/wzf.c)
+             src/main/jni/wzf.c src/main/jni/player.c)
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because system libraries are included in the search path by
