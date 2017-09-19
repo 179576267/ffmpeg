@@ -221,6 +221,8 @@ JNIEXPORT void JNICALL Java_com_wzf_ffmpeg_VideoUtils_playSimpleVideo
     av_register_all();
     //封装上下文
     AVFormatContext *pFormatCtx = avformat_alloc_context();
+
+    LOG_I_DEBUG("文件路径%s", input_cstr);
     //2.打开输入视频文件
     if (avformat_open_input(&pFormatCtx, input_cstr, NULL, NULL) != 0) {
         LOG_E_DEBUG("%s", "打开输入视频文件失败");

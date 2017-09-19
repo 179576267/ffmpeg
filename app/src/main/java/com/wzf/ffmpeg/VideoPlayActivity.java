@@ -8,6 +8,7 @@ import android.view.Surface;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import java.io.File;
 
@@ -24,10 +25,9 @@ import butterknife.OnClick;
 public class VideoPlayActivity extends AppCompatActivity {
     @Bind(R.id.sv_video)
     VideoView svVideo;
-    private String in_video = "1500538734540.mp4";
     private String out_audio = "1500538734540.mp3";
 //    private String video = "1500538734540.mp4";
-    String input = new File(Environment.getExternalStorageDirectory(), in_video).getAbsolutePath();
+    String input = new File(Environment.getExternalStorageDirectory() + "/ffmpeg", "ffmpeg_lager.mp4").getAbsolutePath();
     String output = new File(Environment.getExternalStorageDirectory(), out_audio).getAbsolutePath();
     VideoUtils utils;
     Surface surface;
@@ -45,6 +45,8 @@ public class VideoPlayActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         utils = new VideoUtils();
         surface = svVideo.getHolder().getSurface();
+        File file = new File(input);
+        Toast.makeText(this, file.exists() ? "文件存在" : "文件不存在", Toast.LENGTH_SHORT).show();
     }
 
     @OnClick({R.id.btn_video, R.id.btn_audio_java, R.id.btn_audio_opensl, R.id.btn_play})

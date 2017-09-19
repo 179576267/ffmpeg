@@ -6,6 +6,7 @@ import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 
@@ -17,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Bind(R.id.tv_result)
     TextView tvResult;
-    String input = new File(Environment.getExternalStorageDirectory(), "ffmpeg_test.mp4").getAbsolutePath();
+    String input = new File(Environment.getExternalStorageDirectory() + "/ffmpeg", "ffmpeg_lager.mp4").getAbsolutePath();
     VideoUtils utils;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +27,8 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         utils = new VideoUtils();
         Utils.getUUid();
-
+        File file = new File(input);
+        Toast.makeText(this, file.exists() ? "文件存在" : "文件不存在", Toast.LENGTH_SHORT).show();
     }
 
     @OnClick({R.id.btn_video_info, R.id.btn_encode, R.id.btn_player, R.id.btn_thread})
