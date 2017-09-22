@@ -3,6 +3,7 @@ D:/androidDemo/FFmpeg/app/src/main/obj/local/armeabi/objs/wzf/player.o: \
   D:/androidDemo/FFmpeg/app/src/main/jni/header/com_wzf_ffmpeg_VideoUtils.h \
   D:/androidDemo/FFmpeg/app/src/main/jni/./header/android_log.h \
   D:/androidDemo/FFmpeg/app/src/main/jni/./header/queue.h \
+  D:/androidDemo/FFmpeg/app/src/main/jni/header/include\libavutil/time.h \
   D:/androidDemo/FFmpeg/app/src/main/jni/header/include/libavcodec/avcodec.h \
   D:/androidDemo/FFmpeg/app/src/main/jni/header/include\libavutil/samplefmt.h \
   D:/androidDemo/FFmpeg/app/src/main/jni/header/include\libavutil/avutil.h \
@@ -58,6 +59,8 @@ D:/androidDemo/FFmpeg/app/src/main/jni/header/com_wzf_ffmpeg_VideoUtils.h:
 D:/androidDemo/FFmpeg/app/src/main/jni/./header/android_log.h:
 
 D:/androidDemo/FFmpeg/app/src/main/jni/./header/queue.h:
+
+D:/androidDemo/FFmpeg/app/src/main/jni/header/include\libavutil/time.h:
 
 D:/androidDemo/FFmpeg/app/src/main/jni/header/include/libavcodec/avcodec.h:
 
