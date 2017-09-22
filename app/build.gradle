@@ -47,4 +47,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     //控件助手
     compile 'com.jakewharton:butterknife:7.0.1'
+
+    //动态权限
+    compile 'com.werb.permissionschecker:permissionschecker:0.0.1-beta2'
 }

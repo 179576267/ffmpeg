@@ -50,7 +50,7 @@ include $(PREBUILT_SHARED_LIBRARY)
 #myapp
 include $(CLEAR_VARS)
 LOCAL_MODULE := wzf
-LOCAL_SRC_FILES := wzf.c player.c
+LOCAL_SRC_FILES := wzf.c player.c queue.c
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/header/include
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/header/libyuv
 ##-landroid参数 for native windows
