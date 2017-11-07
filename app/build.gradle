@@ -10,11 +10,15 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
+        externalNativeBuild {
+            cmake {
+                cppFlags "-std=c++11"
+            }
+        }
 
         ndk{
             moduleName "wzf"
-//            abiFilters 'armeabi, armeabi-v7a'
+            abiFilters 'armeabi', "armeabi-v7a"
         }
     }
 
@@ -24,7 +28,7 @@ android {
     }
     externalNativeBuild {
         cmake {
-//            path "CMakeLists.txt"
+            path "CMakeLists.txt"
 //            path 'src/main/jni/Android.mk'
         }
     }
